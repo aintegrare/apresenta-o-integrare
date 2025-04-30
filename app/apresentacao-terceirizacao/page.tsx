@@ -14,7 +14,7 @@ import SlideDesafios from "@/components/slide-desafios"
 import SlideConclusao from "@/components/slide-conclusao"
 
 // Importar o novo componente de geração de PDF
-import PDFGeneratorV2 from "@/components/pdf-generator-v2"
+import SimplePDFDownload from "@/components/simple-pdf-download"
 
 export default function ApresentacaoTerceirizacao() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -115,7 +115,7 @@ export default function ApresentacaoTerceirizacao() {
       </Link>
 
       {/* Usar o novo componente de geração de PDF */}
-      {allSlides.length > 0 && <PDFGeneratorV2 fileName="Terceirizacao_Condominios" slides={allSlides} />}
+      <SimplePDFDownload fileName="Terceirizacao_Condominios" />
 
       {/* Controles de navegação minimalistas */}
       <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex justify-center items-center space-x-4 z-10">

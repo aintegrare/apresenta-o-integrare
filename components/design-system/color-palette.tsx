@@ -44,9 +44,9 @@ export default function ColorPalette() {
       <div>
         <h3 className="text-lg font-semibold mb-3">Cores Primárias</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Color name="Integrare Blue" hex="#0F5B94" className="bg-[#0F5B94]" />
-          <Color name="Integrare Blue Light" hex="#4b7bb5" className="bg-[#4b7bb5]" />
+          <Color name="Integrare Blue" hex="#4b7bb5" className="bg-[#4b7bb5]" />
           <Color name="Integrare Blue Dark" hex="#3d649e" className="bg-[#3d649e]" />
+          <Color name="Integrare Blue Light" hex="#6b91c1" className="bg-[#6b91c1]" />
         </div>
       </div>
 
@@ -54,9 +54,24 @@ export default function ColorPalette() {
         <h3 className="text-lg font-semibold mb-3">Cores Secundárias</h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Color name="Integrare Blue Mid" hex="#4072b0" className="bg-[#4072b0]" />
-          <Color name="Integrare Blue Pale" hex="#6b91c1" className="bg-[#6b91c1]" />
           <Color name="Integrare Blue Lighter" hex="#527eb7" className="bg-[#527eb7]" />
           <Color name="Off White" hex="#f2f1ef" className="bg-[#f2f1ef]" textClass="text-gray-800" />
+          <Color name="Accent Yellow" hex="#FFF8E1" className="bg-[#FFF8E1]" textClass="text-gray-800" />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold mb-3">Variações de Azul</h3>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <Color name="Blue 100" hex="#E6EEF7" className="bg-[#E6EEF7]" textClass="text-gray-800" />
+          <Color name="Blue 200" hex="#C0D4EA" className="bg-[#C0D4EA]" textClass="text-gray-800" />
+          <Color name="Blue 300" hex="#9BBADE" className="bg-[#9BBADE]" textClass="text-gray-800" />
+          <Color name="Blue 400" hex="#769FD1" className="bg-[#769FD1]" />
+          <Color name="Blue 500" hex="#4b7bb5" className="bg-[#4b7bb5]" />
+          <Color name="Blue 600" hex="#3d649e" className="bg-[#3d649e]" />
+          <Color name="Blue 700" hex="#2F4D7A" className="bg-[#2F4D7A]" />
+          <Color name="Blue 800" hex="#213657" className="bg-[#213657]" />
+          <Color name="Blue 900" hex="#142033" className="bg-[#142033]" />
         </div>
       </div>
 
@@ -64,25 +79,8 @@ export default function ColorPalette() {
         <h3 className="text-lg font-semibold mb-3">Cores de Acento</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Color name="Amarelo Claro" hex="#FFF8E1" className="bg-[#FFF8E1]" textClass="text-gray-800" />
-          <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <h4 className="font-medium text-gray-800 mb-2">Diretrizes de Uso</h4>
-            <ul className="text-sm text-gray-700 list-disc pl-5 space-y-1">
-              <li>Use como cor de destaque sutil</li>
-              <li>Ideal para fundos de seções importantes</li>
-              <li>Não use como cor predominante</li>
-              <li>Combine com os tons de azul principal</li>
-            </ul>
-          </div>
-          <div className="p-4 bg-[#FFF8E1] rounded-lg border border-gray-200">
-            <div className="flex items-center mb-2">
-              <span className="h-3 w-3 rounded-full bg-[#0F5B94] mr-2"></span>
-              <span className="text-sm text-gray-800 font-medium">Combinação Recomendada</span>
-            </div>
-            <p className="text-sm text-gray-700">
-              O amarelo claro funciona bem como fundo sutil para destacar conteúdos importantes, com elementos em azul
-              em primeiro plano.
-            </p>
-          </div>
+          <Color name="Amarelo Médio" hex="#FFE082" className="bg-[#FFE082]" textClass="text-gray-800" />
+          <Color name="Amarelo Escuro" hex="#FFD54F" className="bg-[#FFD54F]" textClass="text-gray-800" />
         </div>
       </div>
 
@@ -95,6 +93,16 @@ export default function ColorPalette() {
           <Color name="Gray 500" hex="#6B7280" className="bg-gray-500" />
           <Color name="Gray 700" hex="#374151" className="bg-gray-700" />
           <Color name="Black" hex="#111827" className="bg-gray-900" />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold mb-3">Cores de Estado</h3>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Color name="Success" hex="#10B981" className="bg-[#10B981]" />
+          <Color name="Warning" hex="#F59E0B" className="bg-[#F59E0B]" />
+          <Color name="Error" hex="#EF4444" className="bg-[#EF4444]" />
+          <Color name="Info" hex="#3B82F6" className="bg-[#3B82F6]" />
         </div>
       </div>
     </div>

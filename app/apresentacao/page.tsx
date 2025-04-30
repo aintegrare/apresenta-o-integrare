@@ -20,7 +20,11 @@ import SlidePortfolioBrandingSaude from "@/components/slide-portfolio-branding-s
 import SlidePortfolioBrandingArquitetura from "@/components/slide-portfolio-branding-arquitetura"
 import SlideProcessoCriativo from "@/components/slide-processo-criativo"
 // Importar o novo componente de geração de PDF aprimorado
-import PDFGeneratorEnhanced from "@/components/pdf-generator-enhanced"
+// Remover esta linha:
+// import PDFGeneratorEnhanced from "@/components/pdf-generator-enhanced"
+
+// Adicionar esta linha:
+import SimplePDFDownload from "@/components/simple-pdf-download"
 import SlidePortfolioModa from "@/components/slide-portfolio-moda"
 import SlidePortfolioConexao from "@/components/slide-portfolio-conexao"
 
@@ -132,7 +136,11 @@ export default function Apresentacao() {
       </Link>
 
       {/* Usar o novo componente de geração de PDF aprimorado */}
-      {allSlides.length > 0 && <PDFGeneratorEnhanced fileName="Apresentacao_Institucional" slides={allSlides} />}
+      {/* Remover esta linha: */}
+      {/* {allSlides.length > 0 && <PDFGeneratorEnhanced fileName="Apresentacao_Institucional" slides={allSlides} />} */}
+
+      {/* Adicionar esta linha: */}
+      <SimplePDFDownload fileName="Apresentacao_Institucional" />
 
       {/* Controles de navegação minimalistas */}
       <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex justify-center items-center space-x-4 z-10">

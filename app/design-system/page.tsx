@@ -11,10 +11,12 @@ import Forms from "@/components/design-system/forms"
 import Icons from "@/components/design-system/icons"
 import AccentColorExamples from "@/components/design-system/accent-color-examples"
 import DesignTokens from "@/components/design-system/design-tokens"
-import LayoutPatterns from "@/components/design-system/layout-patterns"
 import Accessibility from "@/components/design-system/accessibility"
 import Animations from "@/components/design-system/animations"
 import CodeSnippets from "@/components/design-system/code-snippets"
+import PageLayouts from "@/components/design-system/page-layouts"
+import NavigationExamples from "@/components/design-system/navigation-examples"
+import CardExamples from "@/components/design-system/card-examples"
 
 export default function DesignSystem() {
   const [activeTab, setActiveTab] = useState("visao-geral")
@@ -28,8 +30,10 @@ export default function DesignSystem() {
     { id: "cards", name: "Cards" },
     { id: "formularios", name: "Formulários" },
     { id: "icones", name: "Ícones" },
-    { id: "tokens", name: "Tokens" },
+    { id: "navegacao", name: "Navegação" },
     { id: "layouts", name: "Layouts" },
+    { id: "exemplos", name: "Exemplos" },
+    { id: "tokens", name: "Tokens" },
     { id: "acessibilidade", name: "Acessibilidade" },
     { id: "animacoes", name: "Animações" },
     { id: "codigo", name: "Código" },
@@ -50,7 +54,7 @@ export default function DesignSystem() {
             <h1 className="ml-3 text-xl font-poppins font-semibold text-gray-900">Design System</h1>
           </div>
           <div>
-            <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-integrare-blue">
+            <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-[#4b7bb5]">
               v2.0
             </span>
           </div>
@@ -65,7 +69,7 @@ export default function DesignSystem() {
                 <button
                   onClick={() => setActiveTab(tab.id)}
                   className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                    activeTab === tab.id ? "bg-integrare-blue text-white" : "text-gray-600 hover:text-integrare-blue"
+                    activeTab === tab.id ? "bg-[#4b7bb5] text-white" : "text-gray-600 hover:text-[#4b7bb5]"
                   }`}
                 >
                   {tab.name}
@@ -94,7 +98,7 @@ export default function DesignSystem() {
                       <li className="flex items-start">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-integrare-blue mr-2 mt-0.5"
+                          className="h-5 w-5 text-[#4b7bb5] mr-2 mt-0.5"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -109,7 +113,7 @@ export default function DesignSystem() {
                       <li className="flex items-start">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-integrare-blue mr-2 mt-0.5"
+                          className="h-5 w-5 text-[#4b7bb5] mr-2 mt-0.5"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -124,7 +128,7 @@ export default function DesignSystem() {
                       <li className="flex items-start">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-integrare-blue mr-2 mt-0.5"
+                          className="h-5 w-5 text-[#4b7bb5] mr-2 mt-0.5"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -139,7 +143,7 @@ export default function DesignSystem() {
                       <li className="flex items-start">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-integrare-blue mr-2 mt-0.5"
+                          className="h-5 w-5 text-[#4b7bb5] mr-2 mt-0.5"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -159,7 +163,7 @@ export default function DesignSystem() {
                       <li className="flex items-start">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-integrare-blue mr-2 mt-0.5"
+                          className="h-5 w-5 text-[#4b7bb5] mr-2 mt-0.5"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -174,7 +178,7 @@ export default function DesignSystem() {
                       <li className="flex items-start">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-integrare-blue mr-2 mt-0.5"
+                          className="h-5 w-5 text-[#4b7bb5] mr-2 mt-0.5"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -189,7 +193,7 @@ export default function DesignSystem() {
                       <li className="flex items-start">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-integrare-blue mr-2 mt-0.5"
+                          className="h-5 w-5 text-[#4b7bb5] mr-2 mt-0.5"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -204,7 +208,7 @@ export default function DesignSystem() {
                       <li className="flex items-start">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-integrare-blue mr-2 mt-0.5"
+                          className="h-5 w-5 text-[#4b7bb5] mr-2 mt-0.5"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -224,7 +228,7 @@ export default function DesignSystem() {
                       <li className="flex items-start">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-integrare-blue mr-2 mt-0.5"
+                          className="h-5 w-5 text-[#4b7bb5] mr-2 mt-0.5"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -239,7 +243,7 @@ export default function DesignSystem() {
                       <li className="flex items-start">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-integrare-blue mr-2 mt-0.5"
+                          className="h-5 w-5 text-[#4b7bb5] mr-2 mt-0.5"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -254,7 +258,7 @@ export default function DesignSystem() {
                       <li className="flex items-start">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-integrare-blue mr-2 mt-0.5"
+                          className="h-5 w-5 text-[#4b7bb5] mr-2 mt-0.5"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -269,7 +273,7 @@ export default function DesignSystem() {
                       <li className="flex items-start">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-integrare-blue mr-2 mt-0.5"
+                          className="h-5 w-5 text-[#4b7bb5] mr-2 mt-0.5"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -297,7 +301,7 @@ export default function DesignSystem() {
                   <div className="flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-integrare-blue mr-3"
+                      className="h-6 w-6 text-[#4b7bb5] mr-3"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -310,7 +314,7 @@ export default function DesignSystem() {
                       />
                     </svg>
                     <div>
-                      <h4 className="font-medium text-integrare-blue">Importante</h4>
+                      <h4 className="font-medium text-[#4b7bb5]">Importante</h4>
                       <p className="text-sm text-gray-600">
                         Sempre consulte este documento antes de iniciar novos projetos ou fazer alterações em materiais
                         existentes. Em caso de dúvidas ou necessidade de exceções, consulte o time de design.
@@ -336,8 +340,10 @@ export default function DesignSystem() {
           {activeTab === "cards" && <Cards />}
           {activeTab === "formularios" && <Forms />}
           {activeTab === "icones" && <Icons />}
+          {activeTab === "navegacao" && <NavigationExamples />}
+          {activeTab === "layouts" && <PageLayouts />}
+          {activeTab === "exemplos" && <CardExamples />}
           {activeTab === "tokens" && <DesignTokens />}
-          {activeTab === "layouts" && <LayoutPatterns />}
           {activeTab === "acessibilidade" && <Accessibility />}
           {activeTab === "animacoes" && <Animations />}
           {activeTab === "codigo" && <CodeSnippets />}

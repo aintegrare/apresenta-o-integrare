@@ -18,7 +18,7 @@ import SlideContato from "@/components/slide-contato-campanha"
 import SlideLogoFinal from "@/components/slide-logo-final"
 
 // Importar o novo componente de geração de PDF
-import PDFGeneratorV2 from "@/components/pdf-generator-v2"
+import SimplePDFDownload from "@/components/simple-pdf-download"
 
 export default function ApresentacaoMedeiros() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -123,7 +123,7 @@ export default function ApresentacaoMedeiros() {
       </Link>
 
       {/* Usar o novo componente de geração de PDF */}
-      {allSlides.length > 0 && <PDFGeneratorV2 fileName="Regularizacao_Faixa_Fronteira" slides={allSlides} />}
+      <SimplePDFDownload fileName="Regularizacao_Faixa_Fronteira" />
 
       {/* Controles de navegação minimalistas */}
       <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex justify-center items-center space-x-4 z-10">
