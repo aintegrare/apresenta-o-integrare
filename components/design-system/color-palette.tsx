@@ -61,6 +61,32 @@ export default function ColorPalette() {
       </div>
 
       <div>
+        <h3 className="text-lg font-semibold mb-3">Cores de Acento</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Color name="Amarelo Claro" hex="#FFF8E1" className="bg-[#FFF8E1]" textClass="text-gray-800" />
+          <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <h4 className="font-medium text-gray-800 mb-2">Diretrizes de Uso</h4>
+            <ul className="text-sm text-gray-700 list-disc pl-5 space-y-1">
+              <li>Use como cor de destaque sutil</li>
+              <li>Ideal para fundos de seções importantes</li>
+              <li>Não use como cor predominante</li>
+              <li>Combine com os tons de azul principal</li>
+            </ul>
+          </div>
+          <div className="p-4 bg-[#FFF8E1] rounded-lg border border-gray-200">
+            <div className="flex items-center mb-2">
+              <span className="h-3 w-3 rounded-full bg-[#0F5B94] mr-2"></span>
+              <span className="text-sm text-gray-800 font-medium">Combinação Recomendada</span>
+            </div>
+            <p className="text-sm text-gray-700">
+              O amarelo claro funciona bem como fundo sutil para destacar conteúdos importantes, com elementos em azul
+              em primeiro plano.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div>
         <h3 className="text-lg font-semibold mb-3">Tons Neutros</h3>
         <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
           <Color name="White" hex="#FFFFFF" className="bg-white border border-gray-200" textClass="text-gray-800" />

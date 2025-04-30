@@ -9,6 +9,12 @@ import Buttons from "@/components/design-system/buttons"
 import Cards from "@/components/design-system/cards"
 import Forms from "@/components/design-system/forms"
 import Icons from "@/components/design-system/icons"
+import AccentColorExamples from "@/components/design-system/accent-color-examples"
+import DesignTokens from "@/components/design-system/design-tokens"
+import LayoutPatterns from "@/components/design-system/layout-patterns"
+import Accessibility from "@/components/design-system/accessibility"
+import Animations from "@/components/design-system/animations"
+import CodeSnippets from "@/components/design-system/code-snippets"
 
 export default function DesignSystem() {
   const [activeTab, setActiveTab] = useState("visao-geral")
@@ -22,11 +28,16 @@ export default function DesignSystem() {
     { id: "cards", name: "Cards" },
     { id: "formularios", name: "Formulários" },
     { id: "icones", name: "Ícones" },
+    { id: "tokens", name: "Tokens" },
+    { id: "layouts", name: "Layouts" },
+    { id: "acessibilidade", name: "Acessibilidade" },
+    { id: "animacoes", name: "Animações" },
+    { id: "codigo", name: "Código" },
   ]
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center">
             <Image
@@ -40,20 +51,20 @@ export default function DesignSystem() {
           </div>
           <div>
             <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-integrare-blue">
-              v1.0
+              v2.0
             </span>
           </div>
         </div>
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <nav className="mb-8">
-          <ul className="flex space-x-4 overflow-x-auto pb-2 hide-scrollbar">
+        <nav className="mb-8 sticky top-[73px] bg-gray-50 z-10 py-2">
+          <ul className="flex space-x-2 overflow-x-auto pb-2 hide-scrollbar">
             {tabs.map((tab) => (
               <li key={tab.id}>
                 <button
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                     activeTab === tab.id ? "bg-integrare-blue text-white" : "text-gray-600 hover:text-integrare-blue"
                   }`}
                 >
@@ -311,13 +322,25 @@ export default function DesignSystem() {
             </div>
           )}
 
-          {activeTab === "cores" && <ColorPalette />}
+          {activeTab === "cores" && (
+            <>
+              <ColorPalette />
+              <div className="mt-8">
+                <AccentColorExamples />
+              </div>
+            </>
+          )}
           {activeTab === "tipografia" && <Typography />}
           {activeTab === "espacamento" && <Spacing />}
           {activeTab === "botoes" && <Buttons />}
           {activeTab === "cards" && <Cards />}
           {activeTab === "formularios" && <Forms />}
           {activeTab === "icones" && <Icons />}
+          {activeTab === "tokens" && <DesignTokens />}
+          {activeTab === "layouts" && <LayoutPatterns />}
+          {activeTab === "acessibilidade" && <Accessibility />}
+          {activeTab === "animacoes" && <Animations />}
+          {activeTab === "codigo" && <CodeSnippets />}
         </div>
       </div>
 
@@ -338,7 +361,7 @@ export default function DesignSystem() {
             </div>
             <div className="mt-4 md:mt-0">
               <span className="text-sm text-gray-500">
-                Design System v1.0 - Atualizado em {new Date().toLocaleDateString()}
+                Design System v2.0 - Atualizado em {new Date().toLocaleDateString()}
               </span>
             </div>
           </div>
