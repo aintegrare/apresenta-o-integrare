@@ -42,11 +42,11 @@ export default function PDFGeneratorEnhanced({ fileName = "apresentacao", slides
 
       console.log(`Preparando para processar ${slides.length} slides com qualidade ${quality}`)
 
-      // Criar um novo documento PDF com orientação paisagem
+      // Criar um novo documento PDF com orientação paisagem e dimensões fixas para apresentação (16:9)
       const pdf = new jsPDF({
         orientation: "landscape",
         unit: "mm",
-        format: "a4",
+        format: "a4", // 297mm x 210mm (paisagem)
       })
 
       // Adicionar metadados ao PDF se solicitado
@@ -65,21 +65,64 @@ export default function PDFGeneratorEnhanced({ fileName = "apresentacao", slides
       tempContainer.style.position = "fixed"
       tempContainer.style.top = "0"
       tempContainer.style.left = "0"
-      tempContainer.style.width = "100vw"
-      tempContainer.style.height = "100vh"
+      // Definir dimensões fixas para manter proporção 16:9
+      tempContainer.style.width = "1280px" // Largura fixa
+      tempContainer.style.height = "720px" // Altura fixa (proporção 16:9)
       tempContainer.style.zIndex = "-9999"
       tempContainer.style.overflow = "hidden"
       tempContainer.style.backgroundColor = "white"
+      tempContainer.style.transform = "scale(1)" // Garantir que não haja escala aplicada
       document.body.appendChild(tempContainer)
 
       // Função para pré-carregar todas as imagens da apresentação
       const preloadImages = async () => {
         return new Promise((resolve) => {
-          // Simular um pequeno atraso para mostrar o progresso
-          setTimeout(() => {
-            setProgress(5)
+          // Coletar todas as URLs de imagens da página
+          const imgElements = document.querySelectorAll("img")
+          const imageUrls = Array.from(imgElements).map((img) => img.src)
+
+          console.log(`Pré-carregando ${imageUrls.length} imagens...`)
+
+          // Pré-carregar cada imagem
+          let loadedCount = 0
+
+          if (imageUrls.length === 0) {
             resolve(true)
-          }, 500)
+            return
+          }
+
+          imageUrls.forEach((url) => {
+            const img = new Image()
+            img.crossOrigin = "anonymous" // Importante para CORS
+
+            img.onload = () => {
+              loadedCount++
+              setProgress(Math.round((loadedCount / imageUrls.length) * 5))
+              if (loadedCount === imageUrls.length) {
+                console.log("Todas as imagens pré-carregadas com sucesso")
+                resolve(true)
+              }
+            }
+
+            img.onerror = () => {
+              console.warn(`Falha ao pré-carregar imagem: ${url}`)
+              loadedCount++
+              if (loadedCount === imageUrls.length) {
+                console.log("Pré-carregamento de imagens concluído com alguns erros")
+                resolve(true)
+              }
+            }
+
+            img.src = url
+          })
+
+          // Timeout de segurança para continuar mesmo se algumas imagens falharem
+          setTimeout(() => {
+            if (loadedCount < imageUrls.length) {
+              console.warn(`Timeout de pré-carregamento: ${loadedCount}/${imageUrls.length} imagens carregadas`)
+              resolve(true)
+            }
+          }, 5000)
         })
       }
 
@@ -95,12 +138,13 @@ export default function PDFGeneratorEnhanced({ fileName = "apresentacao", slides
 
             // Renderizar o slide no container temporário
             const slideContainer = document.createElement("div")
-            slideContainer.style.width = "100%"
-            slideContainer.style.height = "100%"
+            slideContainer.style.width = "1280px" // Largura fixa
+            slideContainer.style.height = "720px" // Altura fixa (proporção 16:9)
             slideContainer.style.display = "flex"
             slideContainer.style.flexDirection = "column"
             slideContainer.style.overflow = "hidden"
             slideContainer.className = "slide-render-container"
+            slideContainer.style.position = "relative" // Garantir posicionamento correto
 
             // Limpar o container temporário
             tempContainer.innerHTML = ""
@@ -114,8 +158,8 @@ export default function PDFGeneratorEnhanced({ fileName = "apresentacao", slides
             root.render(slideElement)
 
             // Esperar que o slide seja renderizado completamente
-            // Tempo de espera ajustado com base na qualidade
-            const renderWaitTime = quality === "ultra" ? 2000 : quality === "high" ? 1500 : 1000
+            // Tempo de espera ajustado com base na qualidade e para garantir carregamento de imagens
+            const renderWaitTime = quality === "ultra" ? 3000 : quality === "high" ? 2500 : 2000
             await new Promise((r) => setTimeout(r, renderWaitTime))
 
             // Configurar opções para html2canvas
@@ -124,26 +168,42 @@ export default function PDFGeneratorEnhanced({ fileName = "apresentacao", slides
               useCORS: true, // Permitir imagens de outros domínios
               allowTaint: true, // Permitir imagens que podem "manchar" o canvas
               backgroundColor: "#ffffff",
-              logging: false, // Desativar logs para reduzir ruído no console
-              imageTimeout: 0, // Sem timeout para carregamento de imagens
+              logging: true, // Ativar logs para depuração
+              imageTimeout: 10000, // Timeout maior para carregamento de imagens
+              width: 1280, // Largura fixa
+              height: 720, // Altura fixa
+              windowWidth: 1280,
+              windowHeight: 720,
               onclone: (clonedDoc) => {
-                // Processar todas as imagens e elementos SVG no clone
-                const images = clonedDoc.querySelectorAll("img, svg")
+                // Processar todas as imagens no clone
+                const images = clonedDoc.querySelectorAll("img")
                 images.forEach((img) => {
-                  if (img instanceof HTMLImageElement) {
-                    img.crossOrigin = "anonymous"
-                    // Forçar carregamento completo das imagens
-                    if (!img.complete) {
-                      img.src = img.src
-                    }
+                  img.crossOrigin = "anonymous"
+
+                  // Forçar carregamento completo das imagens
+                  if (!img.complete) {
+                    console.log(`Forçando carregamento de imagem: ${img.src}`)
+                    const newImg = new Image()
+                    newImg.crossOrigin = "anonymous"
+                    newImg.src = img.src
+                    img.src = img.src // Recarregar a imagem
                   }
                 })
 
                 // Garantir que fontes personalizadas sejam renderizadas corretamente
                 const style = clonedDoc.createElement("style")
                 style.innerHTML = `
-                  * { font-family: Arial, sans-serif !important; }
+                  * { 
+                    font-family: Arial, sans-serif !important; 
+                    box-sizing: border-box !important;
+                  }
                   svg * { font-family: inherit !important; }
+                  
+                  /* Garantir que elementos não ultrapassem os limites */
+                  .slide-render-container * {
+                    max-width: 100%;
+                    overflow-wrap: break-word;
+                  }
                 `
                 clonedDoc.head.appendChild(style)
               },
@@ -168,17 +228,25 @@ export default function PDFGeneratorEnhanced({ fileName = "apresentacao", slides
             const pdfWidth = pdf.internal.pageSize.getWidth()
             const pdfHeight = pdf.internal.pageSize.getHeight()
 
-            // Calcular proporções para manter a relação de aspecto
-            const imgWidth = canvas.width
-            const imgHeight = canvas.height
-            const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight)
+            // Calcular proporções para manter a relação de aspecto 16:9
+            const aspectRatio = 16 / 9
+
+            // Calcular as dimensões para preencher a página mantendo a proporção
+            let imgWidth = pdfWidth
+            let imgHeight = pdfWidth / aspectRatio
+
+            // Se a altura calculada for maior que a altura da página, ajustar
+            if (imgHeight > pdfHeight) {
+              imgHeight = pdfHeight
+              imgWidth = imgHeight * aspectRatio
+            }
 
             // Centralizar a imagem na página
-            const x = (pdfWidth - imgWidth * ratio) / 2
-            const y = (pdfHeight - imgHeight * ratio) / 2
+            const x = (pdfWidth - imgWidth) / 2
+            const y = (pdfHeight - imgHeight) / 2
 
             // Adicionar a imagem à página com dimensões corretas
-            pdf.addImage(imgData, "JPEG", x, y, imgWidth * ratio, imgHeight * ratio)
+            pdf.addImage(imgData, "JPEG", x, y, imgWidth, imgHeight)
 
             // Adicionar numeração de página discreta
             if (includeMetadata) {
@@ -236,19 +304,19 @@ export default function PDFGeneratorEnhanced({ fileName = "apresentacao", slides
             <div className="flex space-x-2">
               <button
                 onClick={() => setQuality("normal")}
-                className={`px-2 py-1 rounded text-xs ${quality === "normal" ? "bg-integrare-blue text-white" : "bg-gray-100"}`}
+                className={`px-2 py-1 rounded text-xs ${quality === "normal" ? "bg-[#4b7bb5] text-white" : "bg-gray-100"}`}
               >
                 Normal
               </button>
               <button
                 onClick={() => setQuality("high")}
-                className={`px-2 py-1 rounded text-xs ${quality === "high" ? "bg-integrare-blue text-white" : "bg-gray-100"}`}
+                className={`px-2 py-1 rounded text-xs ${quality === "high" ? "bg-[#4b7bb5] text-white" : "bg-gray-100"}`}
               >
                 Alta
               </button>
               <button
                 onClick={() => setQuality("ultra")}
-                className={`px-2 py-1 rounded text-xs ${quality === "ultra" ? "bg-integrare-blue text-white" : "bg-gray-100"}`}
+                className={`px-2 py-1 rounded text-xs ${quality === "ultra" ? "bg-[#4b7bb5] text-white" : "bg-gray-100"}`}
               >
                 Ultra
               </button>
@@ -276,7 +344,7 @@ export default function PDFGeneratorEnhanced({ fileName = "apresentacao", slides
         aria-label="Configurações PDF"
         title="Configurações PDF"
       >
-        <Settings className="w-5 h-5 text-integrare-blue" />
+        <Settings className="w-5 h-5 text-[#4b7bb5]" />
       </button>
 
       <button
@@ -289,13 +357,13 @@ export default function PDFGeneratorEnhanced({ fileName = "apresentacao", slides
         {isGenerating ? (
           <FileText className="w-5 h-5 text-gray-400 animate-pulse" />
         ) : (
-          <Download className="w-5 h-5 text-integrare-blue" />
+          <Download className="w-5 h-5 text-[#4b7bb5]" />
         )}
 
         {isGenerating && (
           <div className="absolute top-0 right-0">
-            <div className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-integrare-blue opacity-75"></div>
-            <div className="relative inline-flex rounded-full h-3 w-3 bg-integrare-blue"></div>
+            <div className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-[#4b7bb5] opacity-75"></div>
+            <div className="relative inline-flex rounded-full h-3 w-3 bg-[#4b7bb5]"></div>
           </div>
         )}
 
@@ -305,7 +373,7 @@ export default function PDFGeneratorEnhanced({ fileName = "apresentacao", slides
               <span className="mr-2">Gerando PDF...</span>
               <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-integrare-blue transition-all duration-300"
+                  className="h-full bg-[#4b7bb5] transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
