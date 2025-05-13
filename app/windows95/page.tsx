@@ -10,10 +10,16 @@ import {
   FileText,
   Folder,
   Globe,
+  Home,
   Info,
   Mail,
   Settings,
+  Terminal,
   Play,
+  Pause,
+  SkipBack,
+  SkipForward,
+  Volume2,
   Trash2,
   Palette,
   FileIcon as FilePresentation,
@@ -299,7 +305,6 @@ export default function Windows95() {
 
     return () => {
       if (clippyTimerRef.current) {
-        clearTimeout(clippyTimerRef.current)
       }
     }
   }, [bootStage])
@@ -1574,7 +1579,1431 @@ export default function Windows95() {
         </div>
       )}
 
-      {/* Remaining Windows... */}
+      {openWindows.includes("notepad") && (
+        <div
+          ref={(el) => (windowRefs.current.notepad = el)}
+          className={`win95-window ${activeWindow === "notepad" ? "win95-window-active" : "win95-window-inactive"} ${
+            windowStates.notepad.minimized ? "win95-window-minimized" : ""
+          } ${windowStates.notepad.maximized ? "win95-window-maximized" : ""}`}
+          style={
+            !windowStates.notepad.maximized
+              ? {
+                  top: windowPositions.notepad.y,
+                  left: windowPositions.notepad.x,
+                  width: windowPositions.notepad.width,
+                  height: windowPositions.notepad.height,
+                }
+              : {}
+          }
+          onClick={() => handleWindowClick("notepad")}
+        >
+          <div
+            className="win95-title-bar"
+            draggable={!windowStates.notepad.maximized}
+            onDragStart={(e) => handleDragStart(e, "notepad")}
+          >
+            <div className="win95-title-bar-text">
+              <FileText size={14} />
+              <span>Bloco de Notas - Integrare</span>
+            </div>
+            <div className="win95-title-bar-controls">
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMinimizeWindow(e, "notepad")}
+                onMouseEnter={(e) => handleShowTooltip("Minimizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                _
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMaximizeWindow(e, "notepad")}
+                onMouseEnter={(e) => handleShowTooltip(windowStates.notepad.maximized ? "Restaurar" : "Maximizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                □
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleCloseWindow(e, "notepad")}
+                onMouseEnter={(e) => handleShowTooltip("Fechar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          <div className="win95-notepad">
+            <div className="win95-explorer-menubar">
+              <div className="win95-explorer-menu-item">Arquivo</div>
+              <div className="win95-explorer-menu-item">Editar</div>
+              <div className="win95-explorer-menu-item">Formatar</div>
+              <div className="win95-explorer-menu-item">Exibir</div>
+              <div className="win95-explorer-menu-item">Ajuda</div>
+            </div>
+            <div className="win95-notepad-content">
+              <textarea
+                className="win95-notepad-textarea"
+                value={notepadContent}
+                onChange={(e) => setNotepadContent(e.target.value)}
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openWindows.includes("browser") && (
+        <div
+          ref={(el) => (windowRefs.current.browser = el)}
+          className={`win95-window ${activeWindow === "browser" ? "win95-window-active" : "win95-window-inactive"} ${
+            windowStates.browser.minimized ? "win95-window-minimized" : ""
+          } ${windowStates.browser.maximized ? "win95-window-maximized" : ""}`}
+          style={
+            !windowStates.browser.maximized
+              ? {
+                  top: windowPositions.browser.y,
+                  left: windowPositions.browser.x,
+                  width: windowPositions.browser.width,
+                  height: windowPositions.browser.height,
+                }
+              : {}
+          }
+          onClick={() => handleWindowClick("browser")}
+        >
+          <div
+            className="win95-title-bar"
+            draggable={!windowStates.browser.maximized}
+            onDragStart={(e) => handleDragStart(e, "browser")}
+          >
+            <div className="win95-title-bar-text">
+              <Globe size={14} />
+              <span>Internet Explorer - {browserState.title}</span>
+            </div>
+            <div className="win95-title-bar-controls">
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMinimizeWindow(e, "browser")}
+                onMouseEnter={(e) => handleShowTooltip("Minimizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                _
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMaximizeWindow(e, "browser")}
+                onMouseEnter={(e) => handleShowTooltip(windowStates.browser.maximized ? "Restaurar" : "Maximizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                □
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleCloseWindow(e, "browser")}
+                onMouseEnter={(e) => handleShowTooltip("Fechar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          <div className="win95-browser">
+            <div className="win95-explorer-menubar">
+              <div className="win95-explorer-menu-item">Arquivo</div>
+              <div className="win95-explorer-menu-item">Editar</div>
+              <div className="win95-explorer-menu-item">Exibir</div>
+              <div className="win95-explorer-menu-item">Favoritos</div>
+              <div className="win95-explorer-menu-item">Ferramentas</div>
+              <div className="win95-explorer-menu-item">Ajuda</div>
+            </div>
+            <div className="win95-browser-toolbar">
+              <button
+                className="win95-button"
+                onClick={() => handleBrowserNavigation("https://www.integrare.com")}
+                onMouseEnter={(e) => handleShowTooltip("Voltar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                ←
+              </button>
+              <button
+                className="win95-button"
+                onClick={() => handleBrowserNavigation("https://www.integrare.com/servicos")}
+                onMouseEnter={(e) => handleShowTooltip("Avançar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                →
+              </button>
+              <button
+                className="win95-button"
+                onClick={() => handleBrowserNavigation(browserState.url)}
+                onMouseEnter={(e) => handleShowTooltip("Atualizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                ↻
+              </button>
+              <button
+                className="win95-button"
+                onClick={() => handleBrowserNavigation("https://www.integrare.com")}
+                onMouseEnter={(e) => handleShowTooltip("Página Inicial", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                <Home size={14} />
+              </button>
+              <div className="win95-browser-address">
+                <span>Endereço:</span>
+                <div className="win95-browser-address-text">{browserState.url}</div>
+              </div>
+            </div>
+            <div className="win95-browser-content">
+              {browserState.loading ? (
+                <div className="flex flex-col items-center justify-center h-full">
+                  <div className="win95-loading-animation mb-4"></div>
+                  <div>Carregando página...</div>
+                </div>
+              ) : (
+                <div>
+                  <div className="win95-ie-logo">
+                    <div className="win95-ie-logo-img">🌐</div>
+                    <div className="win95-ie-logo-text">Integrare</div>
+                  </div>
+
+                  <div className="win95-ie-welcome">
+                    <h1>Bem-vindo à Agência Integrare</h1>
+                    <p>Sua parceira em marketing digital e estratégias de negócios</p>
+                  </div>
+
+                  <div className="win95-ie-links">
+                    <div className="win95-ie-link">
+                      <div className="win95-ie-link-icon">📊</div>
+                      <div className="win95-ie-link-text">Nossos Serviços</div>
+                    </div>
+                    <div className="win95-ie-link">
+                      <div className="win95-ie-link-icon">📁</div>
+                      <div className="win95-ie-link-text">Portfólio</div>
+                    </div>
+                    <div className="win95-ie-link">
+                      <div className="win95-ie-link-icon">👥</div>
+                      <div className="win95-ie-link-text">Sobre Nós</div>
+                    </div>
+                    <div className="win95-ie-link">
+                      <div className="win95-ie-link-icon">📞</div>
+                      <div className="win95-ie-link-text">Contato</div>
+                    </div>
+                  </div>
+
+                  <div className="win95-ie-news">
+                    <div className="win95-ie-news-header">Últimas Notícias</div>
+                    <div className="win95-ie-news-item">
+                      Lançamos nossa nova plataforma de análise de dados para marketing digital
+                    </div>
+                    <div className="win95-ie-news-item">Webinar gratuito: Estratégias de SEO para 2023</div>
+                    <div className="win95-ie-news-item">
+                      Case de sucesso: Como aumentamos em 300% o ROI de um cliente do setor de saúde
+                    </div>
+                  </div>
+
+                  <div className="win95-ie-footer">
+                    © 2023 Agência Integrare. Todos os direitos reservados. | Política de Privacidade | Termos de Uso
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="win95-browser-statusbar">
+              {browserState.loading && <div className="win95-browser-loading">⟳</div>}
+              <div>{browserState.loading ? "Carregando..." : "Concluído"}</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openWindows.includes("explorer") && (
+        <div
+          ref={(el) => (windowRefs.current.explorer = el)}
+          className={`win95-window ${activeWindow === "explorer" ? "win95-window-active" : "win95-window-inactive"} ${
+            windowStates.explorer.minimized ? "win95-window-minimized" : ""
+          } ${windowStates.explorer.maximized ? "win95-window-maximized" : ""}`}
+          style={
+            !windowStates.explorer.maximized
+              ? {
+                  top: windowPositions.explorer.y,
+                  left: windowPositions.explorer.x,
+                  width: windowPositions.explorer.width,
+                  height: windowPositions.explorer.height,
+                }
+              : {}
+          }
+          onClick={() => handleWindowClick("explorer")}
+        >
+          <div
+            className="win95-title-bar"
+            draggable={!windowStates.explorer.maximized}
+            onDragStart={(e) => handleDragStart(e, "explorer")}
+          >
+            <div className="win95-title-bar-text">
+              <Computer size={14} />
+              <span>Meu Computador</span>
+            </div>
+            <div className="win95-title-bar-controls">
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMinimizeWindow(e, "explorer")}
+                onMouseEnter={(e) => handleShowTooltip("Minimizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                _
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMaximizeWindow(e, "explorer")}
+                onMouseEnter={(e) => handleShowTooltip(windowStates.explorer.maximized ? "Restaurar" : "Maximizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                □
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleCloseWindow(e, "explorer")}
+                onMouseEnter={(e) => handleShowTooltip("Fechar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          <div className="win95-explorer">
+            <div className="win95-explorer-menubar">
+              <div className="win95-explorer-menu-item">Arquivo</div>
+              <div className="win95-explorer-menu-item">Editar</div>
+              <div className="win95-explorer-menu-item">Exibir</div>
+              <div className="win95-explorer-menu-item">Ir</div>
+              <div className="win95-explorer-menu-item">Favoritos</div>
+              <div className="win95-explorer-menu-item">Ajuda</div>
+            </div>
+            <div className="win95-explorer-toolbar">
+              <button className="win95-button">Voltar</button>
+              <button className="win95-button">Avançar</button>
+              <button className="win95-button">Acima</button>
+              <button className="win95-button">Cortar</button>
+              <button className="win95-button">Copiar</button>
+              <button className="win95-button">Colar</button>
+              <button className="win95-button">Desfazer</button>
+              <button className="win95-button">Excluir</button>
+              <button className="win95-button">Propriedades</button>
+            </div>
+            <div className="win95-explorer-content">
+              <div className="win95-explorer-sidebar">
+                <div className="font-bold mb-2">Pastas</div>
+                <div className="ml-2">
+                  <div className="mb-1">Desktop</div>
+                  <div className="mb-1">Meus Documentos</div>
+                  <div className="mb-1">Meu Computador</div>
+                  <div className="mb-1">Rede</div>
+                  <div className="mb-1">Lixeira</div>
+                </div>
+              </div>
+              <div className="win95-explorer-main">
+                <div className="win95-explorer-item">
+                  <div className="win95-explorer-item-icon">💾</div>
+                  <div className="win95-explorer-item-text">Disco Local (C:)</div>
+                </div>
+                <div className="win95-explorer-item">
+                  <div className="win95-explorer-item-icon">📁</div>
+                  <div className="win95-explorer-item-text">Arquivos de Programas</div>
+                </div>
+                <div className="win95-explorer-item">
+                  <div className="win95-explorer-item-icon">📁</div>
+                  <div className="win95-explorer-item-text">Windows</div>
+                </div>
+                <div className="win95-explorer-item">
+                  <div className="win95-explorer-item-icon">📁</div>
+                  <div className="win95-explorer-item-text">Documentos</div>
+                </div>
+                <div className="win95-explorer-item">
+                  <div className="win95-explorer-item-icon">📁</div>
+                  <div className="win95-explorer-item-text">Integrare</div>
+                </div>
+                <div className="win95-explorer-item">
+                  <div className="win95-explorer-item-icon">📁</div>
+                  <div className="win95-explorer-item-text">Projetos</div>
+                </div>
+                <div className="win95-explorer-item">
+                  <div className="win95-explorer-item-icon">📁</div>
+                  <div className="win95-explorer-item-text">Clientes</div>
+                </div>
+                <div className="win95-explorer-item">
+                  <div className="win95-explorer-item-icon">📁</div>
+                  <div className="win95-explorer-item-text">Marketing</div>
+                </div>
+              </div>
+            </div>
+            <div className="win95-statusbar">8 objetos | 3.5 GB livre de 8.1 GB</div>
+          </div>
+        </div>
+      )}
+
+      {openWindows.includes("calculator") && (
+        <div
+          ref={(el) => (windowRefs.current.calculator = el)}
+          className={`win95-window ${activeWindow === "calculator" ? "win95-window-active" : "win95-window-inactive"} ${
+            windowStates.calculator.minimized ? "win95-window-minimized" : ""
+          } ${windowStates.calculator.maximized ? "win95-window-maximized" : ""}`}
+          style={
+            !windowStates.calculator.maximized
+              ? {
+                  top: windowPositions.calculator.y,
+                  left: windowPositions.calculator.x,
+                  width: windowPositions.calculator.width,
+                  height: windowPositions.calculator.height,
+                }
+              : {}
+          }
+          onClick={() => handleWindowClick("calculator")}
+        >
+          <div
+            className="win95-title-bar"
+            draggable={!windowStates.calculator.maximized}
+            onDragStart={(e) => handleDragStart(e, "calculator")}
+          >
+            <div className="win95-title-bar-text">
+              <span>🧮</span>
+              <span>Calculadora</span>
+            </div>
+            <div className="win95-title-bar-controls">
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMinimizeWindow(e, "calculator")}
+                onMouseEnter={(e) => handleShowTooltip("Minimizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                _
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleCloseWindow(e, "calculator")}
+                onMouseEnter={(e) => handleShowTooltip("Fechar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          <div className="win95-calculator">
+            <div className="win95-calculator-display">{calculatorDisplay}</div>
+            <div className="win95-calculator-buttons">
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("7")}>
+                7
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("8")}>
+                8
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("9")}>
+                9
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("/")}>
+                ÷
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("4")}>
+                4
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("5")}>
+                5
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("6")}>
+                6
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("*")}>
+                ×
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("1")}>
+                1
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("2")}>
+                2
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("3")}>
+                3
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("-")}>
+                -
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("0")}>
+                0
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton(".")}>
+                .
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("=")}>
+                =
+              </button>
+              <button className="win95-button win95-calculator-button" onClick={() => handleCalculatorButton("+")}>
+                +
+              </button>
+              <button
+                className="win95-button win95-calculator-button"
+                style={{ gridColumn: "span 4" }}
+                onClick={() => handleCalculatorButton("C")}
+              >
+                C
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openWindows.includes("minesweeper") && (
+        <div
+          ref={(el) => (windowRefs.current.minesweeper = el)}
+          className={`win95-window ${
+            activeWindow === "minesweeper" ? "win95-window-active" : "win95-window-inactive"
+          } ${windowStates.minesweeper.minimized ? "win95-window-minimized" : ""} ${
+            windowStates.minesweeper.maximized ? "win95-window-maximized" : ""
+          }`}
+          style={
+            !windowStates.minesweeper.maximized
+              ? {
+                  top: windowPositions.minesweeper.y,
+                  left: windowPositions.minesweeper.x,
+                  width: windowPositions.minesweeper.width,
+                  height: windowPositions.minesweeper.height,
+                }
+              : {}
+          }
+          onClick={() => handleWindowClick("minesweeper")}
+        >
+          <div
+            className="win95-title-bar"
+            draggable={!windowStates.minesweeper.maximized}
+            onDragStart={(e) => handleDragStart(e, "minesweeper")}
+          >
+            <div className="win95-title-bar-text">
+              <span>💣</span>
+              <span>Campo Minado</span>
+            </div>
+            <div className="win95-title-bar-controls">
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMinimizeWindow(e, "minesweeper")}
+                onMouseEnter={(e) => handleShowTooltip("Minimizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                _
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleCloseWindow(e, "minesweeper")}
+                onMouseEnter={(e) => handleShowTooltip("Fechar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          <div className="win95-minesweeper">
+            <div className="win95-explorer-menubar">
+              <div className="win95-explorer-menu-item">Jogo</div>
+              <div className="win95-explorer-menu-item">Ajuda</div>
+            </div>
+            <div className="win95-minesweeper-header">
+              <div className="win95-minesweeper-counter">{minesweeperState.minesLeft}</div>
+              <div className="win95-minesweeper-face" onClick={handleMinesweeperReset}>
+                {minesweeperState.face}
+              </div>
+              <div className="win95-minesweeper-counter">000</div>
+            </div>
+            <div className="win95-minesweeper-grid">
+              {minesweeperState.grid.map((row, rowIndex) =>
+                row.map((cell, colIndex) => (
+                  <div
+                    key={`${rowIndex}-${colIndex}`}
+                    className={`win95-minesweeper-cell ${cell.revealed ? "revealed" : ""} ${
+                      cell.revealed && cell.mine ? "mine" : ""
+                    } ${cell.flagged ? "flag" : ""}`}
+                    onClick={() => handleMinesweeperCellClick(rowIndex, colIndex)}
+                    onContextMenu={(e) => handleMinesweeperCellRightClick(e, rowIndex, colIndex)}
+                  >
+                    {cell.revealed && !cell.mine && cell.value > 0 && cell.value}
+                    {cell.revealed && cell.mine && "💣"}
+                  </div>
+                )),
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openWindows.includes("paint") && (
+        <div
+          ref={(el) => (windowRefs.current.paint = el)}
+          className={`win95-window ${activeWindow === "paint" ? "win95-window-active" : "win95-window-inactive"} ${
+            windowStates.paint.minimized ? "win95-window-minimized" : ""
+          } ${windowStates.paint.maximized ? "win95-window-maximized" : ""}`}
+          style={
+            !windowStates.paint.maximized
+              ? {
+                  top: windowPositions.paint.y,
+                  left: windowPositions.paint.x,
+                  width: windowPositions.paint.width,
+                  height: windowPositions.paint.height,
+                }
+              : {}
+          }
+          onClick={() => handleWindowClick("paint")}
+        >
+          <div
+            className="win95-title-bar"
+            draggable={!windowStates.paint.maximized}
+            onDragStart={(e) => handleDragStart(e, "paint")}
+          >
+            <div className="win95-title-bar-text">
+              <Palette size={14} />
+              <span>Paint</span>
+            </div>
+            <div className="win95-title-bar-controls">
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMinimizeWindow(e, "paint")}
+                onMouseEnter={(e) => handleShowTooltip("Minimizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                _
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMaximizeWindow(e, "paint")}
+                onMouseEnter={(e) => handleShowTooltip(windowStates.paint.maximized ? "Restaurar" : "Maximizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                □
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleCloseWindow(e, "paint")}
+                onMouseEnter={(e) => handleShowTooltip("Fechar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          <div className="win95-paint">
+            <div className="win95-explorer-menubar">
+              <div className="win95-explorer-menu-item">Arquivo</div>
+              <div className="win95-explorer-menu-item">Editar</div>
+              <div className="win95-explorer-menu-item">Exibir</div>
+              <div className="win95-explorer-menu-item">Imagem</div>
+              <div className="win95-explorer-menu-item">Cores</div>
+              <div className="win95-explorer-menu-item">Ajuda</div>
+            </div>
+            <div className="win95-paint-toolbar">
+              <div className="win95-paint-tools">
+                <div
+                  className={`win95-paint-tool ${paintState.tool === "pencil" ? "active" : ""}`}
+                  onClick={() => setPaintState((prev) => ({ ...prev, tool: "pencil" }))}
+                >
+                  ✏️
+                </div>
+                <div
+                  className={`win95-paint-tool ${paintState.tool === "brush" ? "active" : ""}`}
+                  onClick={() => setPaintState((prev) => ({ ...prev, tool: "brush" }))}
+                >
+                  🖌️
+                </div>
+                <div
+                  className={`win95-paint-tool ${paintState.tool === "eraser" ? "active" : ""}`}
+                  onClick={() => setPaintState((prev) => ({ ...prev, tool: "eraser" }))}
+                >
+                  🧽
+                </div>
+                <div
+                  className={`win95-paint-tool ${paintState.tool === "fill" ? "active" : ""}`}
+                  onClick={() => setPaintState((prev) => ({ ...prev, tool: "fill" }))}
+                >
+                  🪣
+                </div>
+              </div>
+              <div className="win95-paint-colors">
+                <div
+                  className={`win95-paint-color ${paintState.color === "#000000" ? "active" : ""}`}
+                  style={{ backgroundColor: "#000000" }}
+                  onClick={() => setPaintState((prev) => ({ ...prev, color: "#000000" }))}
+                ></div>
+                <div
+                  className={`win95-paint-color ${paintState.color === "#ff0000" ? "active" : ""}`}
+                  style={{ backgroundColor: "#ff0000" }}
+                  onClick={() => setPaintState((prev) => ({ ...prev, color: "#ff0000" }))}
+                ></div>
+                <div
+                  className={`win95-paint-color ${paintState.color === "#00ff00" ? "active" : ""}`}
+                  style={{ backgroundColor: "#00ff00" }}
+                  onClick={() => setPaintState((prev) => ({ ...prev, color: "#00ff00" }))}
+                ></div>
+                <div
+                  className={`win95-paint-color ${paintState.color === "#0000ff" ? "active" : ""}`}
+                  style={{ backgroundColor: "#0000ff" }}
+                  onClick={() => setPaintState((prev) => ({ ...prev, color: "#0000ff" }))}
+                ></div>
+                <div
+                  className={`win95-paint-color ${paintState.color === "#ffff00" ? "active" : ""}`}
+                  style={{ backgroundColor: "#ffff00" }}
+                  onClick={() => setPaintState((prev) => ({ ...prev, color: "#ffff00" }))}
+                ></div>
+                <div
+                  className={`win95-paint-color ${paintState.color === "#ff00ff" ? "active" : ""}`}
+                  style={{ backgroundColor: "#ff00ff" }}
+                  onClick={() => setPaintState((prev) => ({ ...prev, color: "#ff00ff" }))}
+                ></div>
+                <div
+                  className={`win95-paint-color ${paintState.color === "#00ffff" ? "active" : ""}`}
+                  style={{ backgroundColor: "#00ffff" }}
+                  onClick={() => setPaintState((prev) => ({ ...prev, color: "#00ffff" }))}
+                ></div>
+                <div
+                  className={`win95-paint-color ${paintState.color === "#ffffff" ? "active" : ""}`}
+                  style={{ backgroundColor: "#ffffff" }}
+                  onClick={() => setPaintState((prev) => ({ ...prev, color: "#ffffff" }))}
+                ></div>
+              </div>
+            </div>
+            <div className="win95-paint-canvas-container">
+              <canvas
+                ref={paintCanvasRef}
+                width={550}
+                height={350}
+                className="win95-paint-canvas"
+                onMouseDown={handlePaintMouseDown}
+                onMouseMove={handlePaintMouseMove}
+                onMouseUp={handlePaintMouseUp}
+                onMouseLeave={handlePaintMouseUp}
+              ></canvas>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openWindows.includes("wordpad") && (
+        <div
+          ref={(el) => (windowRefs.current.wordpad = el)}
+          className={`win95-window ${activeWindow === "wordpad" ? "win95-window-active" : "win95-window-inactive"} ${
+            windowStates.wordpad.minimized ? "win95-window-minimized" : ""
+          } ${windowStates.wordpad.maximized ? "win95-window-maximized" : ""}`}
+          style={
+            !windowStates.wordpad.maximized
+              ? {
+                  top: windowPositions.wordpad.y,
+                  left: windowPositions.wordpad.x,
+                  width: windowPositions.wordpad.width,
+                  height: windowPositions.wordpad.height,
+                }
+              : {}
+          }
+          onClick={() => handleWindowClick("wordpad")}
+        >
+          <div
+            className="win95-title-bar"
+            draggable={!windowStates.wordpad.maximized}
+            onDragStart={(e) => handleDragStart(e, "wordpad")}
+          >
+            <div className="win95-title-bar-text">
+              <FileText size={14} />
+              <span>WordPad</span>
+            </div>
+            <div className="win95-title-bar-controls">
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMinimizeWindow(e, "wordpad")}
+                onMouseEnter={(e) => handleShowTooltip("Minimizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                _
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMaximizeWindow(e, "wordpad")}
+                onMouseEnter={(e) => handleShowTooltip(windowStates.wordpad.maximized ? "Restaurar" : "Maximizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                □
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleCloseWindow(e, "wordpad")}
+                onMouseEnter={(e) => handleShowTooltip("Fechar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          <div className="win95-wordpad">
+            <div className="win95-explorer-menubar">
+              <div className="win95-explorer-menu-item">Arquivo</div>
+              <div className="win95-explorer-menu-item">Editar</div>
+              <div className="win95-explorer-menu-item">Exibir</div>
+              <div className="win95-explorer-menu-item">Inserir</div>
+              <div className="win95-explorer-menu-item">Formatar</div>
+              <div className="win95-explorer-menu-item">Ajuda</div>
+            </div>
+            <div className="win95-wordpad-format">
+              <select
+                className="win95-wordpad-select"
+                value={wordpadFormat.font}
+                onChange={(e) => setWordpadFormat((prev) => ({ ...prev, font: e.target.value }))}
+              >
+                <option>Times New Roman</option>
+                <option>Arial</option>
+                <option>Courier New</option>
+                <option>Comic Sans MS</option>
+              </select>
+              <select
+                className="win95-wordpad-select"
+                value={wordpadFormat.size}
+                onChange={(e) => setWordpadFormat((prev) => ({ ...prev, size: e.target.value }))}
+              >
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+                <option>14</option>
+                <option>16</option>
+                <option>18</option>
+                <option>20</option>
+                <option>22</option>
+                <option>24</option>
+                <option>26</option>
+                <option>28</option>
+                <option>36</option>
+                <option>48</option>
+                <option>72</option>
+              </select>
+              <button
+                className={`win95-button ${wordpadFormat.bold ? "active" : ""}`}
+                onClick={() => setWordpadFormat((prev) => ({ ...prev, bold: !prev.bold }))}
+              >
+                <strong>N</strong>
+              </button>
+              <button
+                className={`win95-button ${wordpadFormat.italic ? "active" : ""}`}
+                onClick={() => setWordpadFormat((prev) => ({ ...prev, italic: !prev.italic }))}
+              >
+                <em>I</em>
+              </button>
+              <button
+                className={`win95-button ${wordpadFormat.underline ? "active" : ""}`}
+                onClick={() => setWordpadFormat((prev) => ({ ...prev, underline: !prev.underline }))}
+              >
+                <u>S</u>
+              </button>
+            </div>
+            <div className="win95-wordpad-content">
+              <div
+                className="win95-wordpad-editor"
+                contentEditable
+                style={{
+                  fontFamily: wordpadFormat.font,
+                  fontSize: `${wordpadFormat.size}px`,
+                  fontWeight: wordpadFormat.bold ? "bold" : "normal",
+                  fontStyle: wordpadFormat.italic ? "italic" : "normal",
+                  textDecoration: wordpadFormat.underline ? "underline" : "none",
+                  textAlign: wordpadFormat.align as any,
+                }}
+                dangerouslySetInnerHTML={{ __html: wordpadContent.replace(/\n/g, "<br>") }}
+                onInput={(e) => setWordpadContent((e.target as HTMLDivElement).innerText)}
+              ></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openWindows.includes("mediaplayer") && (
+        <div
+          ref={(el) => (windowRefs.current.mediaplayer = el)}
+          className={`win95-window ${activeWindow === "mediaplayer" ? "win95-window-active" : "win95-window-inactive"} ${
+            windowStates.mediaplayer.minimized ? "win95-window-minimized" : ""
+          } ${windowStates.mediaplayer.maximized ? "win95-window-maximized" : ""}`}
+          style={
+            !windowStates.mediaplayer.maximized
+              ? {
+                  top: windowPositions.mediaplayer.y,
+                  left: windowPositions.mediaplayer.x,
+                  width: windowPositions.mediaplayer.width,
+                  height: windowPositions.mediaplayer.height,
+                }
+              : {}
+          }
+          onClick={() => handleWindowClick("mediaplayer")}
+        >
+          <div
+            className="win95-title-bar"
+            draggable={!windowStates.mediaplayer.maximized}
+            onDragStart={(e) => handleDragStart(e, "mediaplayer")}
+          >
+            <div className="win95-title-bar-text">
+              <Play size={14} />
+              <span>Windows Media Player</span>
+            </div>
+            <div className="win95-title-bar-controls">
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMinimizeWindow(e, "mediaplayer")}
+                onMouseEnter={(e) => handleShowTooltip("Minimizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                _
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleCloseWindow(e, "mediaplayer")}
+                onMouseEnter={(e) => handleShowTooltip("Fechar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          <div className="win95-media-player">
+            <div className="win95-media-player-display">
+              {mediaPlayerState.playing ? "▶️ Reproduzindo:" : "⏸️ Pausado:"} {mediaPlayerState.currentTrack}
+            </div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={mediaPlayerState.position}
+              onChange={(e) => setMediaPlayerState((prev) => ({ ...prev, position: Number.parseInt(e.target.value) }))}
+              className="win95-media-player-slider"
+            />
+            <div className="win95-media-player-controls">
+              <button
+                className="win95-button win95-media-player-button"
+                onClick={() => setMediaPlayerState((prev) => ({ ...prev, position: 0 }))}
+              >
+                <SkipBack size={16} />
+              </button>
+              <button
+                className="win95-button win95-media-player-button"
+                onClick={() => setMediaPlayerState((prev) => ({ ...prev, playing: !prev.playing }))}
+              >
+                {mediaPlayerState.playing ? <Pause size={16} /> : <Play size={16} />}
+              </button>
+              <button
+                className="win95-button win95-media-player-button"
+                onClick={() => setMediaPlayerState((prev) => ({ ...prev, position: 100 }))}
+              >
+                <SkipForward size={16} />
+              </button>
+              <button
+                className="win95-button win95-media-player-button"
+                onClick={() => setMediaPlayerState((prev) => ({ ...prev, volume: Math.min(100, prev.volume + 10) }))}
+              >
+                <Volume2 size={16} />
+              </button>
+            </div>
+            <div className="mt-2 text-center text-xs">Volume: {mediaPlayerState.volume}%</div>
+          </div>
+        </div>
+      )}
+
+      {openWindows.includes("recyclebin") && (
+        <div
+          ref={(el) => (windowRefs.current.recyclebin = el)}
+          className={`win95-window ${activeWindow === "recyclebin" ? "win95-window-active" : "win95-window-inactive"} ${
+            windowStates.recyclebin.minimized ? "win95-window-minimized" : ""
+          } ${windowStates.recyclebin.maximized ? "win95-window-maximized" : ""}`}
+          style={
+            !windowStates.recyclebin.maximized
+              ? {
+                  top: windowPositions.recyclebin.y,
+                  left: windowPositions.recyclebin.x,
+                  width: windowPositions.recyclebin.width,
+                  height: windowPositions.recyclebin.height,
+                }
+              : {}
+          }
+          onClick={() => handleWindowClick("recyclebin")}
+        >
+          <div
+            className="win95-title-bar"
+            draggable={!windowStates.recyclebin.maximized}
+            onDragStart={(e) => handleDragStart(e, "recyclebin")}
+          >
+            <div className="win95-title-bar-text">
+              <Trash2 size={14} />
+              <span>Lixeira</span>
+            </div>
+            <div className="win95-title-bar-controls">
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMinimizeWindow(e, "recyclebin")}
+                onMouseEnter={(e) => handleShowTooltip("Minimizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                _
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMaximizeWindow(e, "recyclebin")}
+                onMouseEnter={(e) =>
+                  handleShowTooltip(windowStates.recyclebin.maximized ? "Restaurar" : "Maximizar", e)
+                }
+                onMouseLeave={handleHideTooltip}
+              >
+                □
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleCloseWindow(e, "recyclebin")}
+                onMouseEnter={(e) => handleShowTooltip("Fechar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          <div className="win95-recycle-bin">
+            <div className="win95-explorer-menubar">
+              <div className="win95-explorer-menu-item">Arquivo</div>
+              <div className="win95-explorer-menu-item">Editar</div>
+              <div className="win95-explorer-menu-item">Exibir</div>
+              <div className="win95-explorer-menu-item">Ajuda</div>
+            </div>
+            <div className="win95-explorer-toolbar">
+              <button
+                className="win95-button"
+                onClick={() => setRecycleBinItems([])}
+                disabled={recycleBinItems.length === 0}
+              >
+                Esvaziar Lixeira
+              </button>
+            </div>
+            <div className="win95-recycle-bin-content">
+              {recycleBinItems.length === 0 ? (
+                <div className="win95-recycle-bin-empty">
+                  <div className="win95-recycle-bin-empty-icon">🗑️</div>
+                  <div>A Lixeira está vazia</div>
+                </div>
+              ) : (
+                recycleBinItems.map((item, index) => (
+                  <div key={index} className="win95-recycle-bin-item">
+                    <div className="win95-recycle-bin-item-icon">📄</div>
+                    <div>{item}</div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openWindows.includes("controlpanel") && (
+        <div
+          ref={(el) => (windowRefs.current.controlpanel = el)}
+          className={`win95-window ${activeWindow === "controlpanel" ? "win95-window-active" : "win95-window-inactive"} ${
+            windowStates.controlpanel.minimized ? "win95-window-minimized" : ""
+          } ${windowStates.controlpanel.maximized ? "win95-window-maximized" : ""}`}
+          style={
+            !windowStates.controlpanel.maximized
+              ? {
+                  top: windowPositions.controlpanel.y,
+                  left: windowPositions.controlpanel.x,
+                  width: windowPositions.controlpanel.width,
+                  height: windowPositions.controlpanel.height,
+                }
+              : {}
+          }
+          onClick={() => handleWindowClick("controlpanel")}
+        >
+          <div
+            className="win95-title-bar"
+            draggable={!windowStates.controlpanel.maximized}
+            onDragStart={(e) => handleDragStart(e, "controlpanel")}
+          >
+            <div className="win95-title-bar-text">
+              <Settings size={14} />
+              <span>Painel de Controle</span>
+            </div>
+            <div className="win95-title-bar-controls">
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMinimizeWindow(e, "controlpanel")}
+                onMouseEnter={(e) => handleShowTooltip("Minimizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                _
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMaximizeWindow(e, "controlpanel")}
+                onMouseEnter={(e) =>
+                  handleShowTooltip(windowStates.controlpanel.maximized ? "Restaurar" : "Maximizar", e)
+                }
+                onMouseLeave={handleHideTooltip}
+              >
+                □
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleCloseWindow(e, "controlpanel")}
+                onMouseEnter={(e) => handleShowTooltip("Fechar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          <div className="win95-control-panel">
+            <div className="win95-control-panel-content">
+              <div className="win95-control-panel-grid">
+                <div className="win95-control-panel-item" onClick={() => triggerBSOD()}>
+                  <div className="win95-control-panel-item-icon">🖥️</div>
+                  <div className="win95-control-panel-item-title">Sistema</div>
+                </div>
+                <div className="win95-control-panel-item">
+                  <div className="win95-control-panel-item-icon">🔊</div>
+                  <div className="win95-control-panel-item-title">Sons</div>
+                </div>
+                <div className="win95-control-panel-item">
+                  <div className="win95-control-panel-item-icon">🖱️</div>
+                  <div className="win95-control-panel-item-title">Mouse</div>
+                </div>
+                <div className="win95-control-panel-item">
+                  <div className="win95-control-panel-item-icon">⌨️</div>
+                  <div className="win95-control-panel-item-title">Teclado</div>
+                </div>
+                <div className="win95-control-panel-item">
+                  <div className="win95-control-panel-item-icon">🎨</div>
+                  <div className="win95-control-panel-item-title">Vídeo</div>
+                </div>
+                <div className="win95-control-panel-item">
+                  <div className="win95-control-panel-item-icon">🕰️</div>
+                  <div className="win95-control-panel-item-title">Data/Hora</div>
+                </div>
+                <div className="win95-control-panel-item">
+                  <div className="win95-control-panel-item-icon">👤</div>
+                  <div className="win95-control-panel-item-title">Usuários</div>
+                </div>
+                <div className="win95-control-panel-item">
+                  <div className="win95-control-panel-item-icon">🌐</div>
+                  <div className="win95-control-panel-item-title">Rede</div>
+                </div>
+                <div className="win95-control-panel-item">
+                  <div className="win95-control-panel-item-icon">🖨️</div>
+                  <div className="win95-control-panel-item-title">Impressoras</div>
+                </div>
+                <div className="win95-control-panel-item">
+                  <div className="win95-control-panel-item-icon">💾</div>
+                  <div className="win95-control-panel-item-title">Adicionar/Remover Programas</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openWindows.includes("powerpoint") && (
+        <div
+          ref={(el) => (windowRefs.current.powerpoint = el)}
+          className={`win95-window ${activeWindow === "powerpoint" ? "win95-window-active" : "win95-window-inactive"} ${
+            windowStates.powerpoint.minimized ? "win95-window-minimized" : ""
+          } ${windowStates.powerpoint.maximized ? "win95-window-maximized" : ""}`}
+          style={
+            !windowStates.powerpoint.maximized
+              ? {
+                  top: windowPositions.powerpoint.y,
+                  left: windowPositions.powerpoint.x,
+                  width: windowPositions.powerpoint.width,
+                  height: windowPositions.powerpoint.height,
+                }
+              : {}
+          }
+          onClick={() => handleWindowClick("powerpoint")}
+        >
+          <div
+            className="win95-title-bar"
+            draggable={!windowStates.powerpoint.maximized}
+            onDragStart={(e) => handleDragStart(e, "powerpoint")}
+          >
+            <div className="win95-title-bar-text">
+              <FilePresentation size={14} />
+              <span>PowerPoint - Apresentação Integrare</span>
+            </div>
+            <div className="win95-title-bar-controls">
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMinimizeWindow(e, "powerpoint")}
+                onMouseEnter={(e) => handleShowTooltip("Minimizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                _
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMaximizeWindow(e, "powerpoint")}
+                onMouseEnter={(e) =>
+                  handleShowTooltip(windowStates.powerpoint.maximized ? "Restaurar" : "Maximizar", e)
+                }
+                onMouseLeave={handleHideTooltip}
+              >
+                □
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleCloseWindow(e, "powerpoint")}
+                onMouseEnter={(e) => handleShowTooltip("Fechar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          <div className="win95-powerpoint">
+            <div className="win95-explorer-menubar">
+              <div className="win95-explorer-menu-item">Arquivo</div>
+              <div className="win95-explorer-menu-item">Editar</div>
+              <div className="win95-explorer-menu-item">Exibir</div>
+              <div className="win95-explorer-menu-item">Inserir</div>
+              <div className="win95-explorer-menu-item">Formatar</div>
+              <div className="win95-explorer-menu-item">Ferramentas</div>
+              <div className="win95-explorer-menu-item">Apresentação</div>
+              <div className="win95-explorer-menu-item">Ajuda</div>
+            </div>
+            <div className="win95-powerpoint-content">
+              <div className="win95-powerpoint-slide">
+                <div className="win95-powerpoint-slide-title">{powerPointSlides[powerPointSlide].title}</div>
+                <div className="win95-powerpoint-slide-content">
+                  {powerPointSlides[powerPointSlide].content.map((item, index) => (
+                    <div key={index}>{item}</div>
+                  ))}
+                </div>
+                <div className="win95-powerpoint-slide-footer">{powerPointSlides[powerPointSlide].footer}</div>
+              </div>
+            </div>
+            <div className="win95-powerpoint-controls">
+              <button
+                className="win95-button"
+                onClick={() => setPowerPointSlide((prev) => Math.max(0, prev - 1))}
+                disabled={powerPointSlide === 0}
+              >
+                Anterior
+              </button>
+              <button
+                className="win95-button"
+                onClick={() => setPowerPointSlide((prev) => Math.min(powerPointSlides.length - 1, prev + 1))}
+                disabled={powerPointSlide === powerPointSlides.length - 1}
+              >
+                Próximo
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openWindows.includes("cdrom") && (
+        <div
+          ref={(el) => (windowRefs.current.cdrom = el)}
+          className={`win95-window ${activeWindow === "cdrom" ? "win95-window-active" : "win95-window-inactive"} ${
+            windowStates.cdrom.minimized ? "win95-window-minimized" : ""
+          } ${windowStates.cdrom.maximized ? "win95-window-maximized" : ""}`}
+          style={
+            !windowStates.cdrom.maximized
+              ? {
+                  top: windowPositions.cdrom.y,
+                  left: windowPositions.cdrom.x,
+                  width: windowPositions.cdrom.width,
+                  height: windowPositions.cdrom.height,
+                }
+              : {}
+          }
+          onClick={() => handleWindowClick("cdrom")}
+        >
+          <div
+            className="win95-title-bar"
+            draggable={!windowStates.cdrom.maximized}
+            onDragStart={(e) => handleDragStart(e, "cdrom")}
+          >
+            <div className="win95-title-bar-text">
+              <span>💿</span>
+              <span>CD-ROM Integrare (D:)</span>
+            </div>
+            <div className="win95-title-bar-controls">
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMinimizeWindow(e, "cdrom")}
+                onMouseEnter={(e) => handleShowTooltip("Minimizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                _
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleMaximizeWindow(e, "cdrom")}
+                onMouseEnter={(e) => handleShowTooltip(windowStates.cdrom.maximized ? "Restaurar" : "Maximizar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                □
+              </button>
+              <button
+                className="win95-button win95-button-small"
+                onClick={(e) => handleCloseWindow(e, "cdrom")}
+                onMouseEnter={(e) => handleShowTooltip("Fechar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          <div className="win95-cdrom">
+            <div className="win95-explorer-menubar">
+              <div className="win95-explorer-menu-item">Arquivo</div>
+              <div className="win95-explorer-menu-item">Editar</div>
+              <div className="win95-explorer-menu-item">Exibir</div>
+              <div className="win95-explorer-menu-item">Ajuda</div>
+            </div>
+            <div className="win95-cdrom-content">
+              <div className="win95-cdrom-header">
+                <div className="win95-cdrom-logo">💿</div>
+                <div>
+                  <div className="win95-cdrom-title">Integrare Marketing Digital</div>
+                  <div className="win95-cdrom-subtitle">CD-ROM Interativo - v1.0</div>
+                </div>
+              </div>
+
+              <div className="win95-cdrom-section">
+                <div className="win95-cdrom-section-title">Bem-vindo ao CD-ROM da Integrare</div>
+                <p>
+                  Este CD-ROM contém informações sobre nossa agência, portfólio de trabalhos e materiais de marketing.
+                </p>
+                <p>Clique nos ícones abaixo para explorar o conteúdo:</p>
+
+                <div className="win95-cdrom-grid">
+                  <div className="win95-cdrom-item" onClick={() => handleWindowClick("about")}>
+                    <div className="win95-cdrom-item-icon">🏢</div>
+                    <div className="win95-cdrom-item-title">Sobre a Integrare</div>
+                  </div>
+                  <div className="win95-cdrom-item" onClick={() => handleWindowClick("services")}>
+                    <div className="win95-cdrom-item-icon">🛠️</div>
+                    <div className="win95-cdrom-item-title">Nossos Serviços</div>
+                  </div>
+                  <div className="win95-cdrom-item" onClick={() => handleWindowClick("portfolio")}>
+                    <div className="win95-cdrom-item-icon">📁</div>
+                    <div className="win95-cdrom-item-title">Portfólio</div>
+                  </div>
+                  <div className="win95-cdrom-item" onClick={() => handleWindowClick("powerpoint")}>
+                    <div className="win95-cdrom-item-icon">📊</div>
+                    <div className="win95-cdrom-item-title">Apresentação</div>
+                  </div>
+                  <div className="win95-cdrom-item" onClick={() => handleWindowClick("mediaplayer")}>
+                    <div className="win95-cdrom-item-icon">🎵</div>
+                    <div className="win95-cdrom-item-title">Mídia</div>
+                  </div>
+                  <div className="win95-cdrom-item" onClick={() => handleWindowClick("contact")}>
+                    <div className="win95-cdrom-item-icon">📞</div>
+                    <div className="win95-cdrom-item-title">Contato</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="win95-cdrom-section mt-4">
+                <div className="win95-cdrom-section-title">Requisitos do Sistema</div>
+                <p>• Windows 95 ou superior</p>
+                <p>• Processador 486DX 66MHz ou superior</p>
+                <p>• 16MB de RAM</p>
+                <p>• Placa de vídeo SVGA</p>
+                <p>• Drive de CD-ROM 4x</p>
+                <p>• Placa de som compatível com Windows</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showScreensaver && (
+        <div className="win95-screensaver" onClick={() => setShowScreensaver(false)}>
+          <div
+            className="win95-screensaver-logo"
+            style={{
+              top: Math.random() * window.innerHeight,
+              left: Math.random() * window.innerWidth,
+            }}
+          >
+            Integrare
+          </div>
+        </div>
+      )}
+
+      {showBSOD && (
+        <div className="win95-bsod">
+          <div className="win95-bsod-header">Windows</div>
+          <div className="win95-bsod-text">
+            Um erro ocorreu. Para evitar danos ao seu computador, o sistema foi interrompido.
+          </div>
+          <div className="win95-bsod-code">
+            INTEGRARE_MARKETING_EXCEPTION
+            <br />
+            Error: 0x0000001E (0xC0000005, 0x00000000, 0x00000000, 0x00000000)
+          </div>
+          <div className="win95-bsod-text">* Pressione qualquer tecla para reiniciar</div>
+          <div className="win95-bsod-footer">Reiniciando automaticamente em 5 segundos...</div>
+        </div>
+      )}
+
+      {showClippy && (
+        <div className="win95-clippy" onClick={handleClippyClick}>
+          {clippyMessage && <div className="win95-clippy-bubble">{clippyMessage}</div>}
+          <div className="win95-clippy-image"></div>
+        </div>
+      )}
+
+      {showShutdown && (
+        <div className="win95-shutdown">
+          <div className="win95-shutdown-header">Desligar o Windows</div>
+          <div className="win95-shutdown-content">
+            <div className="win95-shutdown-message">
+              <div className="win95-shutdown-icon">🖥️</div>
+              <div>O que você deseja fazer com o computador?</div>
+            </div>
+            <div className="win95-shutdown-options">
+              <div className="win95-shutdown-option">
+                <input
+                  type="radio"
+                  id="shutdown-option-restart"
+                  name="shutdown-option"
+                  checked={shutdownOption === "restart"}
+                  onChange={() => setShutdownOption("restart")}
+                />
+                <label htmlFor="shutdown-option-restart">Reiniciar</label>
+              </div>
+              <div className="win95-shutdown-option">
+                <input
+                  type="radio"
+                  id="shutdown-option-shutdown"
+                  name="shutdown-option"
+                  checked={shutdownOption === "shutdown"}
+                  onChange={() => setShutdownOption("shutdown")}
+                />
+                <label htmlFor="shutdown-option-shutdown">Desligar</label>
+              </div>
+              <div className="win95-shutdown-option">
+                <input
+                  type="radio"
+                  id="shutdown-option-cancel"
+                  name="shutdown-option"
+                  checked={shutdownOption === "cancel"}
+                  onChange={() => setShutdownOption("cancel")}
+                />
+                <label htmlFor="shutdown-option-cancel">Cancelar</label>
+              </div>
+            </div>
+            <div className="win95-shutdown-buttons">
+              <button className="win95-button" onClick={confirmShutdown}>
+                OK
+              </button>
+              <button className="win95-button" onClick={() => setShowShutdown(false)}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Taskbar */}
       <div className="win95-taskbar">
@@ -1617,7 +3046,6 @@ export default function Windows95() {
               {window === "mediaplayer" && <Play size={16} />}
               {window === "recyclebin" && <Trash2 size={16} />}
               {window === "controlpanel" && <Settings size={16} />}
-              {window === "powerpoint" && <FilePresentation size={16} />}
               {window === "cdrom" && <span>💿</span>}
               <span>
                 {window === "about" && "Sobre Nós"}
@@ -1634,7 +3062,6 @@ export default function Windows95() {
                 {window === "mediaplayer" && "Media Player"}
                 {window === "recyclebin" && "Lixeira"}
                 {window === "controlpanel" && "Painel de Controle"}
-                {window === "powerpoint" && "PowerPoint"}
                 {window === "cdrom" && "CD-ROM Integrare"}
               </span>
             </button>
@@ -1682,8 +3109,65 @@ export default function Windows95() {
               <FileText size={16} />
               <span>Bloco de Notas</span>
             </div>
+            <div className="win95-start-menu-item" onClick={() => handleStartMenuItemClick("calculator")}>
+              <span className="text-lg mr-2">🧮</span>
+              <span>Calculadora</span>
+            </div>
+            <div className="win95-start-menu-item" onClick={() => handleStartMenuItemClick("minesweeper")}>
+              <span className="text-lg mr-2">💣</span>
+              <span>Campo Minado</span>
+            </div>
+            <div className="win95-start-menu-item" onClick={() => handleStartMenuItemClick("paint")}>
+              <Palette size={16} />
+              <span>Paint</span>
+            </div>
+            <div className="win95-start-menu-item" onClick={() => handleStartMenuItemClick("wordpad")}>
+              <FileText size={16} />
+              <span>WordPad</span>
+            </div>
+            <div className="win95-start-menu-item" onClick={() => handleStartMenuItemClick("mediaplayer")}>
+              <Play size={16} />
+              <span>Media Player</span>
+            </div>
+            <div className="win95-start-menu-item" onClick={() => handleStartMenuItemClick("controlpanel")}>
+              <Settings size={16} />
+              <span>Painel de Controle</span>
+            </div>
+            <div className="win95-start-menu-item" onClick={() => handleStartMenuItemClick("cdrom")}>
+              <span className="text-lg mr-2">💿</span>
+              <span>CD-ROM Integrare</span>
+            </div>
 
             <div className="win95-divider"></div>
+
+            <div
+              className="win95-start-menu-item"
+              onClick={() => {
+                setSoundEnabled(!soundEnabled)
+                setStartMenuOpen(false)
+              }}
+            >
+              <span className="text-lg mr-2">{soundEnabled ? "🔊" : "🔇"}</span>
+              <span>{soundEnabled ? "Desativar Sons" : "Ativar Sons"}</span>
+            </div>
+
+            <div className="win95-divider"></div>
+
+            <Link href="/" className="win95-start-menu-item">
+              <Home size={16} />
+              <span>Voltar ao Portal</span>
+            </Link>
+
+            <div
+              className="win95-start-menu-item"
+              onClick={() => {
+                setBootStage("booting")
+                setStartMenuOpen(false)
+              }}
+            >
+              <Terminal size={16} />
+              <span>Reiniciar</span>
+            </div>
 
             <div className="win95-start-menu-item" onClick={handleShutdown}>
               <Power size={16} />
@@ -1693,7 +3177,63 @@ export default function Windows95() {
         </div>
       )}
 
-      {/* Dialogs and Overlays */}
+      {/* Context Menu */}
+      {contextMenu && (
+        <div
+          className="win95-context-menu"
+          style={{ top: contextMenu.y, left: contextMenu.x }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {contextMenu.type === "desktop" && (
+            <>
+              <div className="win95-context-menu-item">
+                <div className="win95-context-menu-item-icon">↻</div>
+                <span>Atualizar</span>
+              </div>
+              <div className="win95-divider"></div>
+              <div className="win95-context-menu-item">
+                <div className="win95-context-menu-item-icon">📋</div>
+                <span>Colar</span>
+              </div>
+              <div className="win95-divider"></div>
+              <div className="win95-context-menu-item">
+                <div className="win95-context-menu-item-icon">📊</div>
+                <span>Propriedades</span>
+              </div>
+            </>
+          )}
+
+          {contextMenu.type === "icon" && (
+            <>
+              <div className="win95-context-menu-item">
+                <div className="win95-context-menu-item-icon">▶️</div>
+                <span>Abrir</span>
+              </div>
+              <div className="win95-divider"></div>
+              <div className="win95-context-menu-item">
+                <div className="win95-context-menu-item-icon">✂️</div>
+                <span>Recortar</span>
+              </div>
+              <div className="win95-context-menu-item">
+                <div className="win95-context-menu-item-icon">📋</div>
+                <span>Copiar</span>
+              </div>
+              <div className="win95-divider"></div>
+              <div className="win95-context-menu-item">
+                <div className="win95-context-menu-item-icon">🗑️</div>
+                <span>Excluir</span>
+              </div>
+              <div className="win95-divider"></div>
+              <div className="win95-context-menu-item">
+                <div className="win95-context-menu-item-icon">📊</div>
+                <span>Propriedades</span>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Dialog */}
       {showDialog && (
         <div className="win95-dialog">
           <div className="win95-title-bar">
@@ -1701,7 +3241,12 @@ export default function Windows95() {
               <span>Mensagem do Sistema</span>
             </div>
             <div className="win95-title-bar-controls">
-              <button className="win95-button win95-button-small" onClick={() => setShowDialog(null)}>
+              <button
+                className="win95-button win95-button-small"
+                onClick={() => setShowDialog(null)}
+                onMouseEnter={(e) => handleShowTooltip("Fechar", e)}
+                onMouseLeave={handleHideTooltip}
+              >
                 ×
               </button>
             </div>
@@ -1722,23 +3267,14 @@ export default function Windows95() {
         </div>
       )}
 
-      {showScreensaver && (
-        <div className="win95-screensaver" onClick={() => setShowScreensaver(false)}>
-          <div className="win95-screensaver-logo">Integrare</div>
+      {/* Tooltip */}
+      {tooltipState && (
+        <div className="win95-tooltip" style={{ top: tooltipState.y, left: tooltipState.x }}>
+          {tooltipState.text}
         </div>
       )}
 
-      {showBSOD && (
-        <div className="win95-bsod">
-          <div className="win95-bsod-header">Windows</div>
-          <div className="win95-bsod-text">
-            Um erro ocorreu. Para evitar danos ao seu computador, o sistema foi interrompido.
-          </div>
-          <div className="win95-bsod-text">* Pressione qualquer tecla para reiniciar</div>
-        </div>
-      )}
-
-      {/* Back Button to Home */}
+      {/* Back Button */}
       <Link
         href="/"
         className="absolute top-4 right-4 bg-gray-300 border-t-2 border-l-2 border-white border-r-2 border-b-2 border-gray-500 p-2 flex items-center z-50"
